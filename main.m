@@ -1,3 +1,7 @@
+% Cristian Vitali, univpm 2019 
+% Attivare le funzioni desiderate mettendo a 1 
+% le variabili FLAG
+
 ........... 1. INTERPOLAZIONE LINEARE  .............
 FLAG1=0;        %  1-on , 0-off                    %
 ....................................................
@@ -16,7 +20,7 @@ ni2=0.33;       % parametro per parte fraziona:    %
 
 
 ............... 3. EFFETTO FLANGER .................
-FLAG3=1;        %  1-on , 0-off                    %
+FLAG3=0;        %  1-on , 0-off                    %
 ....................................................
 alpha=-0.200;   % 1 -> -1                          %
 beta=0.7070;    % 0 -> 1                           %
@@ -32,9 +36,8 @@ SOUND3=1;       % 1-sound on , 0-sound off         %
 
 % INIZIALIZZAZIONI 
 
-[data,fs]=audioread('chitarra.wav'); data(:,1)=[];
-%data=[1 2 3 4 5 6 5 4 3 2 1]; fs=48000;
-
+% caricamento file audio
+[data,fs]=audioread('nomefile.wav'); data(:,1)=[];
 % tempo di campionamento, campioni e vettore tempo
 Tc=1/fs;
 L=length(data);
@@ -57,7 +60,6 @@ if( FLAG1 == 1)
    % -COMPARAZIONE SEGNALE DI INGRESSO E USCITA
    figure(1); 
    plot(tempo,data,tempo,y1)
-   %stem(data); hold on; stem(y1)
    grid on;
    
    % -CALCOLO RISPOSTA MODULO DEL FILTRO
@@ -101,7 +103,6 @@ if( FLAG2 == 1)
    % -COMPARAZIONE SEGNALE DI INGRESSO E USCITA
    figure(4); 
    plot(tempo,data,tempo,y2)
-   %stem(data); hold on; stem(y2) 
    grid on;
    
    
@@ -135,7 +136,7 @@ end
 
 ........... ESERCIZIO 3 - effetto flanger ...........
 .....................................................
-%  Si realizza una funzione Matlab per l’implementazione 
+%  Si realizza una funzione Matlab per lâ€™implementazione 
 %  di un circuito che esegue un effetto Flanger al 
 %  segnale di ingresso. Si utilizza una seconda funzione 
 %  per il calcolo del 'Time Variant Fractional Delay'
@@ -177,8 +178,12 @@ if( FLAG3 == 1 )
   
    % -EFFETTO SEGNALE AUDIO
    if(SOUND3 == 1)
+       % segnale originale
        sound(data,fs)
+       % premi invio dopo aver ascoltato il segnale 
+       % originale, per passare a quello modificato
        pause
+       % segnale modificato
        sound(y3,fs)
    end
 end
