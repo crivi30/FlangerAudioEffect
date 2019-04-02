@@ -26,4 +26,3 @@ else
     end
     ni=(1.-delta)./(1.+delta);
 end
-
