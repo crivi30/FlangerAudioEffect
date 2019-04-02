@@ -14,15 +14,15 @@ ni1=0.50;       % parte frazionaria in campioni    %
 FLAG2=0;        %  1-on , 0-off                    %
 ....................................................
 M2=0000;        % ritardo intero in campioni       %
-ni2=0.33;       % parametro per parte fraziona:    % 
+ni2=0.33;       % parametro per parte frazionaria: % 
                 %   delta = (1-ni2)/(1+ni2)        %
 ....................................................
 
 
 ............... 3. EFFETTO FLANGER .................
-FLAG3=0;        %  1-on , 0-off                    %
+FLAG3=1;        %  1-on , 0-off                    %
 ....................................................
-alpha=-0.200;   % 1 -> -1                          %
+alpha=-0.207;   % 1 -> -1                          %
 beta=0.7070;    % 0 -> 1                           %
 gamma=0.7070;   % 0 -> 1                           %
 D0=5.5;         % ritardo medio in ms              %
@@ -36,8 +36,9 @@ SOUND3=1;       % 1-sound on , 0-sound off         %
 
 % INIZIALIZZAZIONI 
 
-% caricamento file audio
-[data,fs]=audioread('nomefile.wav'); data(:,1)=[];
+[data,fs]=audioread('chitarra.wav'); data(:,1)=[];
+%data=[1 2 3 4 5 6 5 4 3 2 1]; fs=48000;
+
 % tempo di campionamento, campioni e vettore tempo
 Tc=1/fs;
 L=length(data);
@@ -60,6 +61,7 @@ if( FLAG1 == 1)
    % -COMPARAZIONE SEGNALE DI INGRESSO E USCITA
    figure(1); 
    plot(tempo,data,tempo,y1)
+   %stem(data); hold on; stem(y1)
    grid on;
    
    % -CALCOLO RISPOSTA MODULO DEL FILTRO
@@ -71,7 +73,7 @@ if( FLAG1 == 1)
    for ni=0.001:0.1:1.2
       b=[zeros(1,M1-1) 1-ni ni];
       [H,W]=freqz(b,1);
-      plot(W/pi,10*log(abs(H)))
+      plot(W/pi,20*log(abs(H)))
    end
 
 
@@ -81,7 +83,7 @@ if( FLAG1 == 1)
    hold on;
    grid on;
    for ni=0.001:0.1:1.2
-      b=[zeros(1,M1-1 ) 1-ni ni]; 
+      b=[zeros(1,M1-1) 1-ni ni]; 
       phasez(b,1);
    end
 end    
@@ -103,6 +105,7 @@ if( FLAG2 == 1)
    % -COMPARAZIONE SEGNALE DI INGRESSO E USCITA
    figure(4); 
    plot(tempo,data,tempo,y2)
+   %stem(data); hold on; stem(y2) 
    grid on;
    
    
@@ -117,7 +120,7 @@ if( FLAG2 == 1)
       b=[zeros(1,M2-1) ni 1];
       a=[1 ni];
       [H,W]=freqz(b,a);
-      plot(W/pi,10*log(abs(H)))
+      plot(W/pi,20*log(abs(H)))
    end
 
 
@@ -160,17 +163,17 @@ if( FLAG3 == 1 )
    b=[ beta, zeros(1,floor(D0-D1-1)), gamma];
    a=[1, zeros(1,floor(D0-D1-1)), -alpha];
    [H,W]=freqz(b,a);
-   plot(W/pi,10*log(abs(H)),'r'); hold on;
+   plot(W/pi,20*log(abs(H)),'r'); hold on;
 
    b=[ beta, zeros(1,floor(D0-1)), gamma];
    a=[1, zeros(1,floor(D0-1)), -alpha];
    [H,W]=freqz(b,a);
-   plot(W/pi,10*log(abs(H)),'b')
+   plot(W/pi,20*log(abs(H)),'b')
    
    b=[ beta, zeros(1,floor(D0+D1-1)), gamma];
    a=[1, zeros(1,floor(D0+D1-1)), -alpha];
    [H,W]=freqz(b,a);
-   plot(W/pi,10*log(abs(H)),'g')
+   plot(W/pi,20*log(abs(H)),'g')
    title('Modulo del filtro');
    legend('D0-D1','D0','D0+D1');
      
@@ -178,12 +181,8 @@ if( FLAG3 == 1 )
   
    % -EFFETTO SEGNALE AUDIO
    if(SOUND3 == 1)
-       % segnale originale
        sound(data,fs)
-       % premi invio dopo aver ascoltato il segnale 
-       % originale, per passare a quello modificato
        pause
-       % segnale modificato
        sound(y3,fs)
    end
 end
