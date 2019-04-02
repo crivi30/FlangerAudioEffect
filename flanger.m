@@ -58,5 +58,3 @@ else
     % uscita con effetto audio
     y3= beta*x1+gamma*x2; 
 end
-
-
